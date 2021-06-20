@@ -12,7 +12,7 @@ package maze;
 import java.util.*;
 import java.io.*;
 
-public class Tile implements Serializable{
+public class Tile implements Serializable, Comparable<Tile>{
 
   public enum Type{
     CORRIDOR,
@@ -22,14 +22,23 @@ public class Tile implements Serializable{
   }
 
   private Type type;
-
+  private static int idCounter = 0;
+  public int id;
+  public Tile parent = null;
+  public List <Edge> neighbors;
+  public double f = Double.MAX_VALUE;
+  public double g = Double.MAX_VALUE;
+  public double h;
 
   /**
   * Constructor for tile object with specified type.
   * @param type the type to generate the tile according to its type. 
   */
-  private Tile(Type type){
-    this.type = type; 
+  private Tile(Type type, double h){
+    this.type = type;
+    this.h = h;
+    this.id = idCounter++;
+    this.neighbors = new ArrayList<>();
   }
 
   /**
@@ -38,19 +47,44 @@ public class Tile implements Serializable{
   * @return Returns the appropriate tile which is generated from the charc c. 
   */
 
-  protected static Tile fromChar(char c){  
+  protected static Tile fromChar(char c, double h){
 
     switch(c){
-      case 'e': Tile tile1 = new Tile(Type.ENTRANCE);
+      case 'e': Tile tile1 = new Tile(Type.ENTRANCE, h);
       return tile1;
-      case 'x': Tile tile2 = new Tile(Type.EXIT);
+      case 'x': Tile tile2 = new Tile(Type.EXIT, h);
       return tile2;
-      case '#': Tile tile3 = new Tile(Type.WALL);
+      case '#': Tile tile3 = new Tile(Type.WALL, h);
       return tile3;
-      case '.': Tile tile4 = new Tile(Type.CORRIDOR);
+      case '.': Tile tile4 = new Tile(Type.CORRIDOR, h);
       return tile4;
       default: return null;  
     }
+  }
+
+  @Override
+  public int compareTo(Tile t){
+    return Double.compare(this.f, t.f);
+  }
+
+  public static class Edge{
+
+    public int weight;
+    public Tile tile;
+
+    Edge(int weight, Tile t){
+      this.weight = weight;
+      this.tile = t;
+    }
+  }
+
+  public void addBranch(int weight, Tile t){
+    Edge newEdge = new Edge(weight, t);
+    neighbors.add(newEdge);
+  }
+
+  public double calculateHeuristic(Tile t){
+    return this.h;
   }
 
   /**

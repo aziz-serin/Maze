@@ -26,7 +26,8 @@ public class Maze implements Serializable{
 
   private Tile entrance;
   private Tile exit;
-  private List<List<Tile>> tiles; 
+  private List<List<Tile>> tiles;
+  private static int lineNumber;
 
   /**
   * An empty constructor for the maze object. It's private to ensure that
@@ -43,13 +44,14 @@ public class Maze implements Serializable{
   * @throws IOException if there is an error reading/accessing the .txt file.  
   */
   public static Maze fromTxt(String input) 
-  throws InvalidMazeException{ 
-
+  throws InvalidMazeException{
     List<List<Tile>> tilesList;
     int numberOfLines = getLineNumber(input);
     tilesList = new ArrayList<>(numberOfLines);
     Maze maze = new Maze();
+    maze.lineNumber = numberOfLines;
     int entranceError = 0; int exitError = 0;
+    int exitLine =  getExitLine(input);
 
     try(FileReader fReader = new FileReader(input)){
 
@@ -67,7 +69,7 @@ public class Maze implements Serializable{
         int tileTracker = 0;
         for(int i = 0; i< line.length(); i++){
             if(line.charAt(i) == 'e' || line.charAt(i) =='x' || line.charAt(i) == '#' || line.charAt(i) == '.'){
-              Tile t = Tile.fromChar(line.charAt(i));
+              Tile t = Tile.fromChar(line.charAt(i), Math.abs(exitLine-i));
               if(line.charAt(i) == 'e'){
                 maze.entrance = t;
                 entranceError++;
@@ -110,9 +112,53 @@ public class Maze implements Serializable{
       error.printStackTrace();
     }
 
+    List<Direction> dir = new ArrayList<Direction>();
+    dir.add(Direction.NORTH);
+    dir.add(Direction.EAST);
+    dir.add(Direction.WEST);
+    dir.add(Direction.SOUTH);
     maze.tiles = tilesList;
+
+    int currentLine = 0;
+    Coordinate coordExit = maze.getTileLocation(maze.exit);
+    for (List<Tile> tiles : maze.tiles){
+      for(Tile t : tiles){
+        if(!t.toString().equals("#")){
+          for(Direction d : dir){
+            Tile check = maze.getAdjacentTile(t, d);
+            if(!check.toString().equals("#")){
+              Coordinate coordCheck = maze.getTileLocation(check);
+              int weight = coordExit.getX() - coordCheck.getX();
+              t.addBranch(weight, check);
+            }
+          }
+        }
+      }
+      currentLine++;
+    }
     return maze;
 
+  }
+
+  public static int getExitLine(String input){
+    int exit = 0;
+    int lines = 0;
+    try(BufferedReader reader = new BufferedReader(new FileReader(input))){
+      String line = reader.readLine();
+      while (reader.readLine() != null){
+        for(int i = 0; i< line.length(); i++){
+          if(line.charAt(i) == 'x') {
+            exit = lines;
+          }
+        }
+        lines++;
+        line = reader.readLine();
+      }
+      reader.close();
+    }
+    catch(IOException e){e.printStackTrace();}
+
+    return exit;
   }
 
   /**
