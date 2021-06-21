@@ -45,13 +45,15 @@ public class Maze implements Serializable{
   */
   public static Maze fromTxt(String input) 
   throws InvalidMazeException{
+
     List<List<Tile>> tilesList;
     int numberOfLines = getLineNumber(input);
     tilesList = new ArrayList<>(numberOfLines);
     Maze maze = new Maze();
     maze.lineNumber = numberOfLines;
     int entranceError = 0; int exitError = 0;
-    int exitLine =  getExitLine(input);
+    int exitX =  getExitLine(input)[0];
+    int exitY = numberOfLines - getExitLine(input)[1];
 
     try(FileReader fReader = new FileReader(input)){
 
@@ -69,7 +71,9 @@ public class Maze implements Serializable{
         int tileTracker = 0;
         for(int i = 0; i< line.length(); i++){
             if(line.charAt(i) == 'e' || line.charAt(i) =='x' || line.charAt(i) == '#' || line.charAt(i) == '.'){
-              Tile t = Tile.fromChar(line.charAt(i), Math.abs(exitLine-i));
+              int h = Math.abs(i-exitX) + Math.abs(rowTracker - exitY);
+              System.out.println(h);
+              Tile t = Tile.fromChar(line.charAt(i), h);
               if(line.charAt(i) == 'e'){
                 maze.entrance = t;
                 entranceError++;
@@ -122,14 +126,12 @@ public class Maze implements Serializable{
     int currentLine = 0;
     Coordinate coordExit = maze.getTileLocation(maze.exit);
     for (List<Tile> tiles : maze.tiles){
-      for(Tile t : tiles){
-        if(!t.toString().equals("#")){
-          for(Direction d : dir){
+      for(Tile t : tiles) {
+        if (!t.toString().equals("#")) {
+          for (Direction d : dir) {
             Tile check = maze.getAdjacentTile(t, d);
-            if(!check.toString().equals("#")){
-              Coordinate coordCheck = maze.getTileLocation(check);
-              int weight = coordExit.getX() - coordCheck.getX();
-              t.addBranch(weight, check);
+            if (!check.toString().equals("#")) {
+              t.addBranch(1, check);
             }
           }
         }
@@ -140,25 +142,30 @@ public class Maze implements Serializable{
 
   }
 
-  public static int getExitLine(String input){
-    int exit = 0;
-    int lines = 0;
+  public static int[] getExitLine(String input){
+    int exitX = 0;
+    int exitY = 0;
+    int lineN = 0;
     try(BufferedReader reader = new BufferedReader(new FileReader(input))){
       String line = reader.readLine();
       while (reader.readLine() != null){
-        for(int i = 0; i< line.length(); i++){
-          if(line.charAt(i) == 'x') {
-            exit = lines;
+        for(int i = 0; i< line.length(); i++) {
+          if (line.charAt(i) == 'x') {
+            exitX = i;
+            exitY = lineN;
           }
         }
-        lines++;
+        lineN += 1;
         line = reader.readLine();
       }
+      exitY = lineN - exitY;
       reader.close();
     }
     catch(IOException e){e.printStackTrace();}
-
-    return exit;
+    int[] list = new int[2];
+    list[0] = exitX;
+    list[1] = exitY;
+    return list;
   }
 
   /**
@@ -249,7 +256,6 @@ public class Maze implements Serializable{
   * @return all the tiles in the maze as a string
   */
   public String toString(){
-
     int a, b;
     int index = 1;
     a = this.tiles.size();

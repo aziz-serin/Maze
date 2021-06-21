@@ -55,7 +55,6 @@ public class RouteFinder implements Serializable {
 	public Tile aStar(Tile start, Tile exit) throws NoRouteFoundException{
 
 		start.f = start.g + start.calculateHeuristic(exit);
-		int lengthY = maze.getTiles().size() - 1;
 		openList.add(start);
 
 		while(!openList.isEmpty()){

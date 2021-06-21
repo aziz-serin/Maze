@@ -7,7 +7,7 @@ public class MazeDriver {
     Maze maze = null;  
 
   	try{
-  		maze = Maze.fromTxt("../resources/mazes/maze1.txt");
+  		maze = Maze.fromTxt("../resources/mazes/maze2.txt");
   	}
   	catch(InvalidMazeException e){
   	  e.printStackTrace();

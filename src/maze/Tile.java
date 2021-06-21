@@ -26,8 +26,8 @@ public class Tile implements Serializable, Comparable<Tile>{
   public int id;
   public Tile parent = null;
   public List <Edge> neighbors;
-  public double f = Double.MAX_VALUE;
-  public double g = Double.MAX_VALUE;
+  public double f = 0;
+  public double g = 0;
   public double h;
 
   /**
