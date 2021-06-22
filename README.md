@@ -6,6 +6,9 @@ A* is an improved version of it, or we can say Dijkstra is a special case of A* 
 Heuristic function (**h(n)**) is the heart of the A* algorithm, since the algorithm relies on that functions value to make decisions in order to
 find the shortest route. Manhattan Distance is used as a heuristic function in this project since we can only move in 4 directions within the maze.
 
+**Note:** I have provided 5 different mazes to test the algorithm, more can be generated with following the same design principles as the already
+existing ones.
+
 # How do I compile/run the code?
 
 Since the code is written in java11 and java11 does not include javaFx as a default library, I've supplied some execution scripts that will compile/run code with the `--add-modules` flag set (for Java FX).
