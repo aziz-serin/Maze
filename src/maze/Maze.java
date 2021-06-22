@@ -72,7 +72,6 @@ public class Maze implements Serializable{
         for(int i = 0; i< line.length(); i++){
             if(line.charAt(i) == 'e' || line.charAt(i) =='x' || line.charAt(i) == '#' || line.charAt(i) == '.'){
               int h = Math.abs(i-exitX) + Math.abs(rowTracker - exitY);
-              System.out.println(h);
               Tile t = Tile.fromChar(line.charAt(i), h);
               if(line.charAt(i) == 'e'){
                 maze.entrance = t;
