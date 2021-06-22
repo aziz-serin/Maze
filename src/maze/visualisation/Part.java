@@ -1,12 +1,7 @@
 package maze.visualisation;
 
-/**
-* Class providing necessary shapes and their maze representation for the application. 
-* @author Aziz Serin
-* @version 1.0, 29th April 2021
-* @see java.nio.file.Path 
-*/
-
+// Class providing necessary shapes and their maze representation for the application.
+//  @author Aziz Serin
 
 import javafx.scene.shape.*;
 import javafx.scene.paint.*;
@@ -25,19 +20,10 @@ public class Part{
 	private List<List<Shape>> tilesList;
 	private VBox mazeShapes;
 
-	/**
-  	* Constructor of the Part object.
-  	*/
-
 	public Part(){
 		this.tilesList = new ArrayList<>();
 		this.mazeShapes = new VBox();
 	}
-
-	/**
-  	* Method to create a rectangle for wall object.
-  	* @return a rectangle representing wall.
-  	*/
 
 	private Rectangle wall(){
 		rect = new Rectangle(); 
@@ -47,11 +33,6 @@ public class Part{
     return rect;
 	}
 
-	/**
-  	* Method to create a rectangle for corridor object.
-  	* @return a rectangle representing corridor.
-  	*/
-
 	private Rectangle corridor(){
 		rect = new Rectangle(); 
     rect.setWidth(40);
@@ -59,11 +40,6 @@ public class Part{
     rect.setFill(Color.WHITE);
     return rect;
 	}
-
-	/**
-  	* Method to create a polygon for entrance object.
-  	* @return a polygon representing entrance.
-  	*/
 
 	private Polygon entrance(){
 		poly = new Polygon();
@@ -75,11 +51,6 @@ public class Part{
 	  return poly;
 	}
 
-	/**
-  	* Method to create a polygon for exit object.
-  	* @return a polygon representing exit.
-  	*/
-
 	private Polygon exit(){
 		poly = new Polygon();
 	  poly.getPoints().addAll(new Double[]{
@@ -90,21 +61,14 @@ public class Part{
 	  return poly;
 	}
 
-	/**
-  	* Method to create a circle to see the route.
-  	* @return a circle representing route.
-  	*/
-
 	private Circle process(){
 		circ = new Circle(20, 20, 20);
 	  circ.setFill(Color.BLUE);
 	  return circ;
 	}
 
-	/**
-  	* Method to create the visual representation of route finder object.
-  	*	@param routeMaze to visualise.
-  	*/
+
+	// Method to create the visual representation of route finder object.
 
 	public void mazeVisual(RouteFinder routeMaze){
 		this.tilesList.clear();
@@ -154,15 +118,11 @@ public class Part{
     }
   }
 
-  /**
-  	* Method to return the visual representation of route finder object.
-  	*	@return visual representation of the routefinder object
-  	*/
+  // Method to return the visual representation of route finder object.
 
 	public VBox getShapes(){
 		return mazeShapes;
 	}
-
 }
 
 

@@ -1,9 +1,6 @@
- /**
-* Class starting the application.
-* @author Aziz Serin
-* @version 1.0, 29th April 2021
-* @see java.nio.file.Path
-*/
+// Class starting the application.
+// @author Aziz Serin
+
 
 import maze.*;
 import maze.routing.*;
@@ -37,10 +34,9 @@ public class MazeApplication extends Application {
 	private long startTime = 0; private long endTime = 0;
 
 
-	/**
-  	* Start method to initialise the application window and run it.
-  	* @param stage window where application runs;
-  	*/
+
+	// Start method to initialise the application window and run it.
+
 
 	@Override
   public void start (Stage stage){
@@ -125,10 +121,6 @@ public class MazeApplication extends Application {
     stage.show();
 
   }
-
-  /**
-  	* Main method to launch the application.
-  	*/
 
   public static void main(String args[]){
   	launch(args);

@@ -1,18 +1,14 @@
 package maze;
 
-/**
-* Class generating tiles from different characters and provides 
-* useful methods for their management, also implements serialization.
-* @author Aziz Serin
-* @version 1.0, 29th April 2021
-* @serial object.
-* @see java.nio.file.Path 
-*/
+
+// Class generating tiles from different characters and provides
+// methods for their management, also implements serialization.
+
 
 import java.util.*;
 import java.io.*;
 
-public class Tile implements Serializable, Comparable<Tile>{
+public class Tile implements Comparable<Tile>{
 
   public enum Type{
     CORRIDOR,
@@ -30,10 +26,9 @@ public class Tile implements Serializable, Comparable<Tile>{
   public double g = 0;
   public double h;
 
-  /**
-  * Constructor for tile object with specified type.
-  * @param type the type to generate the tile according to its type. 
-  */
+
+  // Constructor for tile object with specified type and heuristic value.
+
   private Tile(Type type, double h){
     this.type = type;
     this.h = h;
@@ -41,11 +36,9 @@ public class Tile implements Serializable, Comparable<Tile>{
     this.neighbors = new ArrayList<>();
   }
 
-  /**
-  * Gets the char as a parameter when called and generates the tile from it. 
-  * @param c is the character representing the tile.
-  * @return Returns the appropriate tile which is generated from the charc c. 
-  */
+
+  // Gets the char as a parameter when called and generates the tile from it.
+
 
   protected static Tile fromChar(char c, double h){
 
@@ -66,7 +59,7 @@ public class Tile implements Serializable, Comparable<Tile>{
   public int compareTo(Tile t){
     return Double.compare(this.f, t.f);
   }
-
+  // An inner class representing Edges of the branchces of every tile in a maze.
   public static class Edge{
 
     public int weight;
@@ -77,29 +70,22 @@ public class Tile implements Serializable, Comparable<Tile>{
       this.tile = t;
     }
   }
-
+  // Adding branches to a tile with a weight (g)
   public void addBranch(int weight, Tile t){
     Edge newEdge = new Edge(weight, t);
     neighbors.add(newEdge);
   }
-
+  // Returns heuristic value. Can be modified to use different heuristic functions.
   public double calculateHeuristic(Tile t){
     return this.h;
   }
-
-  /**
-  * Returns the type of the tile which exists.
-  * @return Returns the type of the tile. 
-  */
 
   public Type getType(){
     return this.type;
   }
 
-  /**
-  * Returns a boolean value indicating whether a tile is navigable or not.
-  * @return Returns a boolean value about navigability of the tile. 
-  */
+
+  // Returns a boolean value indicating whether a tile is navigable or not.
 
   public boolean isNavigable(){
     if(type.equals(Type.CORRIDOR) || type.equals(Type.ENTRANCE) || type.equals(Type.EXIT)){
@@ -110,10 +96,7 @@ public class Tile implements Serializable, Comparable<Tile>{
     }
   }
 
-  /**
-  * Gets the type of the tile and returns the appropriate string..
-  * @return Returns the string representation of the tile. 
-  */
+  //Gets the type of the tile and returns the appropriate string representation
 
   public String toString(){
     switch(getType()){

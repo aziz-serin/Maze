@@ -1,21 +1,14 @@
 package maze;
 
-/**
-* Class generating maze from text files and provides its methods. 
-* @author Aziz Serin
-* @version 1.0, 29th April 2021
-* @serial object.
-* @see java.nio.file.Path
-*/
+// Class generating maze from text files and provides its methods.
+// @author Aziz Serin
 
 import java.util.*;
 import java.io.*;
 
-public class Maze implements Serializable{
+public class Maze{
 
-  /**
-  * Directions that can be used to navigate in the maze. 
-  */
+  // Directions that can be used to navigate in the maze.
 
   public enum Direction{
     NORTH,
@@ -29,20 +22,20 @@ public class Maze implements Serializable{
   private List<List<Tile>> tiles;
   private static int lineNumber;
 
-  /**
-  * An empty constructor for the maze object. It's private to ensure that
-  * maze object cannot be instantiated without a text file. 
-  */
+
+  // An empty constructor for the maze object. It's private to ensure that
+  // maze object cannot be instantiated without a text file.
+
 
   private Maze(){}
 
-  /**
-  * Actual constructor method for the maze object.
-  * @param input path to the .txt file in the working directory.
-  * @return Maze from the given .txt file.
-  * @throws InvalidMazeException if the maze is not proper.
-  * @throws IOException if there is an error reading/accessing the .txt file.  
-  */
+
+//  Actual constructor method for the maze object.
+//  @param input path to the .txt file in the working directory.
+//  @return Maze from the given .txt file.
+//  @throws InvalidMazeException if the maze is not proper.
+//  @throws IOException if there is an error reading/accessing the .txt file.
+
   public static Maze fromTxt(String input) 
   throws InvalidMazeException{
 
@@ -71,7 +64,7 @@ public class Maze implements Serializable{
         int tileTracker = 0;
         for(int i = 0; i< line.length(); i++){
             if(line.charAt(i) == 'e' || line.charAt(i) =='x' || line.charAt(i) == '#' || line.charAt(i) == '.'){
-              int h = Math.abs(i-exitX) + Math.abs(rowTracker - exitY);
+              int h = Math.abs(i-exitX) + Math.abs(rowTracker - exitY); // Heuristic(h) is Manhattan Distance, since we can only move in four directions.
               Tile t = Tile.fromChar(line.charAt(i), h);
               if(line.charAt(i) == 'e'){
                 maze.entrance = t;
@@ -96,7 +89,7 @@ public class Maze implements Serializable{
       }
       fReader.close();
       bReader.close();
-
+      // Uses custom exceptions classes
       if(exitError > 1){
         throw new MultipleExitException("More than one entrance is detected, Invalid Maze!");
       }
@@ -130,7 +123,7 @@ public class Maze implements Serializable{
           for (Direction d : dir) {
             Tile check = maze.getAdjacentTile(t, d);
             if (!check.toString().equals("#")) {
-              t.addBranch(1, check);
+              t.addBranch(1, check); //Adding branchest to every corridor, and g value is 1 since cost of a move is constant
             }
           }
         }
@@ -140,7 +133,7 @@ public class Maze implements Serializable{
     return maze;
 
   }
-
+  // Get the x and y location of exit tile to calculate the Heuristic function.
   public static int[] getExitLine(String input){
     int exitX = 0;
     int exitY = 0;
@@ -167,12 +160,9 @@ public class Maze implements Serializable{
     return list;
   }
 
-  /**
-  * Returns the number of lines in the file.
-  * @param input path to the .txt file in the working directory.
-  * @return int which is the number of lines in the file.
-  * @throws IOException if there is an error reading/accessing the file. 
-  */
+
+  // Returns the number of lines in the file.
+
   public static int getLineNumber(String input){
 
     int lines = 0;
@@ -185,11 +175,9 @@ public class Maze implements Serializable{
 
     return lines;
   }
-  /**
-  * Sets the entrance tile in the maze.
-  * @param tile to set the entrance for.
-  * @throws InvalidMazeException if an entrance already exists.
-  */
+
+  // Sets the entrance tile in the maze.
+
   private void setEntrance(Tile tile) throws InvalidMazeException{
     boolean tileNotInMaze = true;
 
@@ -207,11 +195,9 @@ public class Maze implements Serializable{
       this.entrance = tile;
     }
   }
-  /**
-  * Sets the exit tile in the maze.
-  * @param tile to set the exit for.
-  * @throws InvalidMazeException if an exit already exists.
-  */
+
+  // Sets the exit tile in the maze.
+
   private void setExit(Tile tile) throws InvalidMazeException{
     boolean tileNotInMaze = true;
 
@@ -229,31 +215,23 @@ public class Maze implements Serializable{
       this.exit = tile;
     }
   }
-  /**
-  * Gets the entrance tile in the maze.
-  * @return the entrance tile.
-  */
+
+
   public Tile getEntrance(){
     return this.entrance;
   }
-  /**
-  * Gets the exit tile in the maze.
-  * @return the exit tile.
-  */
+
   public Tile getExit(){
     return this.exit;
   }
-  /**
-  * Gets all the tiles in the maze.
-  * @return all the tiles in the maze as List of Lists of tiles.
-  */
+
   public List<List<Tile>> getTiles(){
     return this.tiles;
   }
-  /**
-  * Returns the string representation of the maze.
-  * @return all the tiles in the maze as a string
-  */
+
+  // Returns the string representation of the maze.
+
+
   public String toString(){
     int a, b;
     int index = 1;
@@ -278,12 +256,9 @@ public class Maze implements Serializable{
     }
     return string;
   }
-  /**
-  * Gets the adjacent tile with given tile and direction.
-  * @param tile get adjacent tile for this tile.
-  * @param direction get adjacent tile in the specified direction.
-  * @return the tile next to the specified tile in a given direction.
-  */
+
+  // Gets the adjacent tile with given tile and direction.
+
   public Tile getAdjacentTile(Tile tile, Direction direction){
 
     Coordinate coordinate = getTileLocation(tile);
@@ -305,22 +280,18 @@ public class Maze implements Serializable{
     }
     return t;
   }
-  /**
-  * Gets the tile at a specific coordinate.
-  * @param coordinate to get the tile from.
-  * @return the tile for the specified coordinate.
-  */
+
+  // Gets the tile at a specific coordinate.
+
   public Tile getTileAtLocation(Coordinate coordinate){
     int x, y;
     x = coordinate.x;
     y = coordinate.y;
     return tiles.get(tiles.size() - 1 - y).get(x);
   }
-  /**
-  * Gets the coordinate for a specific tile.
-  * @param tile to get the coordinate for.
-  * @return the coordinate for the tile.
-  */
+
+  // Gets the coordinate for a specific tile.
+
   public Coordinate getTileLocation(Tile tile){
 
     int tileX = 0; int tileY = 0;
@@ -336,42 +307,30 @@ public class Maze implements Serializable{
     return coordinate;
   }
 
-  /**
-  * Helper class in the maze to represent the 
-  * coordinates of the tiles in the maze.
-  */
-  
+
+  // Helper class in the maze to represent the
+  // coordinates of the tiles in the maze.
+
   public class Coordinate{
 
     private int x;
     private int y;
-    /**
-    * Constructor for the coordinate object.
-    * @param x x value of the coordinate.
-    * @param y y value of the coordinate.
-    */
+
     public Coordinate(int x, int y){
       this.x = x;
       this.y = y;
     }
-    /**
-    * Gets the x value of the coordinate.
-    * @return returns the x value of the coordinate.
-    */
+
     public int getX(){
       return this.x;
     }
-    /**
-    * Gets the y value of the coordinate.
-    * @return returns the y value of the coordinate.
-    */
+
     public int getY(){
       return this.y;
     }
-    /**
-    * Generates a string representation of the coordinate object.
-    * @return returns the string representation of the coordinate.
-    */
+
+    // Generates a string representation of the coordinate object.
+
     public String toString(){
       return "(" + String.valueOf(getX()) + ", " + String.valueOf(getY()) + ")";
     }

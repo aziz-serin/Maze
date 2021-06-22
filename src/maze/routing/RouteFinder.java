@@ -1,56 +1,33 @@
 package maze.routing;
 
-/**
-* Class providing an algorithm to solve the given mazes. 
-* @author Aziz Serin
-* @version 1.0, 29th April 2021
-* @serial object.
-* @see java.nio.file.Path 
-*/
-
+ //Class providing an algorithm to solve the given mazes (A*).
+// @author Aziz Serin
 
 import java.util.*;
 import java.io.*;
 import maze.*;
 
-public class RouteFinder implements Serializable {
+public class RouteFinder{
 
 	private Maze maze;
 	private List<Integer> route = new ArrayList<Integer>();
 	private PriorityQueue<Tile> closedList = new PriorityQueue<>();
 	private PriorityQueue<Tile> openList = new PriorityQueue<>();
 
-	/**
-  	* Constructor of the RouteFinder object.
-  	* @param maze is the maze to generate the RouteFinder for.
-  	*/
+	// Constructor of the RouteFinder object.
+
 
 	public RouteFinder(Maze maze){
 		this.maze = maze;
 	}
-	/**
-  	* A method to get the maze for the RouteFinder.
-  	* @return returns the maze.
-  	*/
+
+	// A method to get the maze for the RouteFinder.
+
 	public Maze getMaze(){  
 		return maze;
 	}
 
-//	public Stack<Tile> getStack(){
-//		return route;
-//	}
-//	/**
-//  	* A method to get the route for the RouteFinder.
-//  	* @return returns the route as a List of tiles.
-//  	*/
-//	public List<Tile> getRoute(){
-//		return route;
-//	}
-//	/**
-//  	* A method to step through the maze.
-//  	* @return true if the maze is solved, false otherwise.
-//  	* @throws NoRouteFoundException if the exit cannot be accessed.
-//  	*/
+	// A* algorithm which solves the given mazes.
 
 	public Tile aStar(Tile start, Tile exit) throws NoRouteFoundException{
 
@@ -91,6 +68,8 @@ public class RouteFinder implements Serializable {
 		return null;
 	}
 
+	// Gets the path which A* algorithm finds
+
 	public void getPath(Tile t){
 		Tile tile = t;
 
@@ -107,18 +86,11 @@ public class RouteFinder implements Serializable {
 		Collections.reverse(ids);
 
 		this.route = ids;
-
-//		return ids;
-//		for(int id : ids){
-//			System.out.print(id + " ");
-//		}
-//		System.out.println("");
 	}
 
-	/**
-	* A method to get the string representation of the solved/partially solved maze.
-	* @return a String which represents the maze status..
-	*/
+
+	// A method to get the string representation of the solved maze.
+
 	public String toString(){
 		List<List<Tile>> allTiles = maze.getTiles();
 
@@ -152,54 +124,6 @@ public class RouteFinder implements Serializable {
     }
     return string;
 	}
-	/**
-	* A method serialize out the RouteFinder object into a file.
-	* @param fileName is the path to save the file at the working directory.
-	*/
-//	public void save(String fileName){
-//
-//      try(FileOutputStream fos = new FileOutputStream(fileName)){
-//        ObjectOutputStream oos = new ObjectOutputStream(fos);
-//        RouteFinder objectToWrite = new RouteFinder(getMaze());
-//        objectToWrite.route = this.route;
-//        objectToWrite.maze = this.maze;
-//        objectToWrite.finished = this.finished;
-//        oos.writeObject(objectToWrite);
-//
-//        oos.flush();
-//        oos.close();
-//        fos.close();
-//      }
-//      catch(IOException e){
-//        e.printStackTrace();
-//      }
-//	}
-//	/**
-//	* A method serialize in the RouteFinder object into a file.
-//	* @param fileName is the path to load the file from the working directory.
-//	* @exception IOException if the file is not found/cannot be accessed.
-//	* @exception ClassNotFoundException if the classes are not found.
-//	*/
-//	public static RouteFinder load(String fileName){
-//
-//		try(FileInputStream fis = new FileInputStream(fileName)){
-//        ObjectInputStream ois = new ObjectInputStream(fis);
-//
-//        RouteFinder routeToReturn = (RouteFinder) ois.readObject();
-//
-//        ois.close();
-//        fis.close();
-//        return routeToReturn;
-//
-//  	}catch(IOException e){
-//      e.printStackTrace();
-//      return null;
-//    }catch(ClassNotFoundException e){
-//      e.printStackTrace();
-//      return null;
-//    }
-// }
-	
 }
 
 
